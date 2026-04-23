@@ -1,4 +1,4 @@
-# PUSD Atlas - Blockchain Intelligence Dashboard
+# Atlas - Blockchain Intelligence Dashboard
 
 A real-time blockchain intelligence dashboard powered by **Dune SIM** for tracking PUSD stablecoin activity on Solana.
 
@@ -22,8 +22,8 @@ A real-time blockchain intelligence dashboard powered by **Dune SIM** for tracki
 
 ```bash
 # Clone the repository
-git clone https://github.com/ayoolafelix/shadowpay.git
-cd shadowpay
+git clone https://github.com/ayoolafelix/atlas.git
+cd atlas
 
 # Install dependencies
 npm install
@@ -130,7 +130,7 @@ Calculates wallet trustworthiness based on:
 ## Project Structure
 
 ```
-/shadowpay
+/atlas
 ├── app/
 │   ├── page.tsx              # Global dashboard
 │   ├── analytics/page.tsx    # Economic overview

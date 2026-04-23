@@ -7,7 +7,7 @@ import { Navigation } from "@/components/Navigation";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "PUSD Atlas | Blockchain Intelligence Dashboard",
+  title: "Atlas | Blockchain Intelligence Dashboard",
   description: "Real-time blockchain intelligence for PUSD stablecoin activity on Solana",
 };
 
