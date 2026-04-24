@@ -3,12 +3,13 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { Navigation } from "@/components/Navigation";
+import { WalletButton } from "@/components/WalletButton";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Atlas | Blockchain Intelligence Dashboard",
-  description: "Real-time blockchain intelligence for PUSD stablecoin activity on Solana",
+  title: "ShadowInvoice | Private Invoicing on Solana",
+  description: "Confidential invoicing and payments using Umbra SDK on Solana",
 };
 
 export default function RootLayout({
@@ -20,7 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+          <div className="min-h-screen bg-slate-950">
             <Navigation />
             <main className="container mx-auto px-4 py-6">
               {children}

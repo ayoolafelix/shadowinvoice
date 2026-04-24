@@ -1,65 +1,108 @@
 import { create } from "zustand";
-import { Transaction, DuneWalletData } from "./simClient";
+import { persist } from "zustand/middleware";
 
-interface WalletState {
-  selectedWallet: string | null;
-  setSelectedWallet: (address: string | null) => void;
-  walletCache: Record<string, DuneWalletData>;
-  setWalletData: (address: string, data: DuneWalletData) => void;
-  getWalletData: (address: string) => DuneWalletData | undefined;
+export interface Invoice {
+  id: string;
+  amount: string;
+  description: string;
+  sender: string;
+  recipient: string;
+  createdAt: string;
+  status: "pending" | "paid" | "expired";
 }
 
-interface LiveTransactionState {
-  liveTransactions: Transaction[];
-  addTransactions: (transactions: Transaction[]) => void;
-  clearTransactions: () => void;
+interface AppState {
+  wallet: string | null;
+  encryptedBalance: string | null;
+  viewingKeys: Record<string, string>;
+  invoicesSent: Invoice[];
+  invoicesReceived: Invoice[];
+  isRegistered: boolean;
+  isConnected: boolean;
+  
+  setWallet: (wallet: string | null) => void;
+  setEncryptedBalance: (balance: string | null) => void;
+  addViewingKey: (invoiceId: string, key: string) => void;
+  removeViewingKey: (invoiceId: string) => void;
+  getViewingKey: (invoiceId: string) => string | undefined;
+  addInvoice: (invoice: Invoice, direction: "sent" | "received") => void;
+  updateInvoiceStatus: (id: string, status: Invoice["status"]) => void;
+  setIsRegistered: (registered: boolean) => void;
+  setIsConnected: (connected: boolean) => void;
+  reset: () => void;
 }
 
-interface TrustScoreState {
-  trustScores: Record<string, number>;
-  setTrustScore: (address: string, score: number) => void;
-  getTrustScore: (address: string) => number | undefined;
-}
+export const useAppStore = create<AppState>()(
+  persist(
+    (set, get) => ({
+      wallet: null,
+      encryptedBalance: null,
+      viewingKeys: {},
+      invoicesSent: [],
+      invoicesReceived: [],
+      isRegistered: false,
+      isConnected: false,
 
-interface FilterState {
-  incomingFilter: boolean;
-  outgoingFilter: boolean;
-  setIncomingFilter: (value: boolean) => void;
-  setOutgoingFilter: (value: boolean) => void;
-}
+      setWallet: (wallet) => set({ wallet }),
 
-export const useWalletStore = create<WalletState>((set, get) => ({
-  selectedWallet: null,
-  setSelectedWallet: (address) => set({ selectedWallet: address }),
-  walletCache: {},
-  setWalletData: (address, data) =>
-    set((state) => ({
-      walletCache: { ...state.walletCache, [address]: data },
-    })),
-  getWalletData: (address) => get().walletCache[address],
-}));
+      setEncryptedBalance: (balance) => set({ encryptedBalance: balance }),
 
-export const useLiveTransactionStore = create<LiveTransactionState>((set) => ({
-  liveTransactions: [],
-  addTransactions: (transactions) =>
-    set((state) => ({
-      liveTransactions: [...transactions, ...state.liveTransactions].slice(0, 500),
-    })),
-  clearTransactions: () => set({ liveTransactions: [] }),
-}));
+      addViewingKey: (invoiceId, key) =>
+        set((state) => ({
+          viewingKeys: { ...state.viewingKeys, [invoiceId]: key },
+        })),
 
-export const useTrustScoreStore = create<TrustScoreState>((set, get) => ({
-  trustScores: {},
-  setTrustScore: (address, score) =>
-    set((state) => ({
-      trustScores: { ...state.trustScores, [address]: score },
-    })),
-  getTrustScore: (address) => get().trustScores[address],
-}));
+      removeViewingKey: (invoiceId) =>
+        set((state) => {
+          const keys = { ...state.viewingKeys };
+          delete keys[invoiceId];
+          return { viewingKeys: keys };
+        }),
 
-export const useFilterStore = create<FilterState>((set) => ({
-  incomingFilter: true,
-  outgoingFilter: true,
-  setIncomingFilter: (value) => set({ incomingFilter: value }),
-  setOutgoingFilter: (value) => set({ outgoingFilter: value }),
-}));
+      getViewingKey: (invoiceId) => get().viewingKeys[invoiceId],
+
+      addInvoice: (invoice, direction) =>
+        set((state) => {
+          if (direction === "sent") {
+            return { invoicesSent: [...state.invoicesSent, invoice] };
+          } else {
+            return { invoicesReceived: [...state.invoicesReceived, invoice] };
+          }
+        }),
+
+      updateInvoiceStatus: (id, status) =>
+        set((state) => ({
+          invoicesSent: state.invoicesSent.map((inv) =>
+            inv.id === id ? { ...inv, status } : inv
+          ),
+          invoicesReceived: state.invoicesReceived.map((inv) =>
+            inv.id === id ? { ...inv, status } : inv
+          ),
+        })),
+
+      setIsRegistered: (registered) => set({ isRegistered: registered }),
+
+      setIsConnected: (connected) => set({ isConnected: connected }),
+
+      reset: () =>
+        set({
+          wallet: null,
+          encryptedBalance: null,
+          viewingKeys: {},
+          invoicesSent: [],
+          invoicesReceived: [],
+          isRegistered: false,
+          isConnected: false,
+        }),
+    }),
+    {
+      name: "shadowinvoice-storage",
+      partialize: (state) => ({
+        wallet: state.wallet,
+        viewingKeys: state.viewingKeys,
+        invoicesSent: state.invoicesSent,
+        invoicesReceived: state.invoicesReceived,
+      }),
+    }
+  )
+);

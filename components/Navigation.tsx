@@ -6,9 +6,9 @@ import { useState } from "react";
 import { clsx } from "clsx";
 
 const navItems = [
-  { href: "/", label: "Global Flow", icon: "📊" },
-  { href: "/analytics", label: "Analytics", icon: "📈" },
-  { href: "/risk", label: "Risk Panel", icon: "⚠️" },
+  { href: "/dashboard", label: "Dashboard", icon: "◉" },
+  { href: "/create", label: "Create Invoice", icon: "+" },
+  { href: "/compliance", label: "Compliance", icon: "◎" },
 ];
 
 export function Navigation() {
@@ -16,13 +16,13 @@ export function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
+    <nav className="sticky top-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center space-x-2">
-            <span className="text-2xl">🔮</span>
-            <span className="font-bold text-xl text-slate-900">
-              PUSD <span className="text-cyan-600">Atlas</span>
+          <Link href="/dashboard" className="flex items-center space-x-2">
+            <span className="text-2xl">⬡</span>
+            <span className="font-bold text-xl text-white">
+              Shadow<span className="text-violet-400">Invoice</span>
             </span>
           </Link>
 
@@ -34,8 +34,8 @@ export function Navigation() {
                 className={clsx(
                   "px-4 py-2 rounded-lg text-sm font-medium transition-colors",
                   pathname === item.href
-                    ? "bg-cyan-100 text-cyan-700"
-                    : "text-slate-600 hover:bg-slate-100"
+                    ? "bg-violet-500/20 text-violet-300"
+                    : "text-slate-400 hover:text-white hover:bg-slate-800"
                 )}
               >
                 <span className="mr-2">{item.icon}</span>
@@ -47,18 +47,18 @@ export function Navigation() {
           <div className="flex items-center space-x-4">
             <div className="hidden sm:flex items-center space-x-2 text-sm text-slate-500">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-violet-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-violet-500"></span>
               </span>
-              <span>Live</span>
+              <span className="text-slate-400">Encrypted</span>
             </div>
 
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-lg hover:bg-slate-100"
+              className="md:hidden p-2 rounded-lg hover:bg-slate-800"
             >
               <svg
-                className="w-6 h-6"
+                className="w-6 h-6 text-slate-300"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -84,7 +84,7 @@ export function Navigation() {
         </div>
 
         {mobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-slate-200">
+          <div className="md:hidden py-4 border-t border-slate-800">
             {navItems.map((item) => (
               <Link
                 key={item.href}
@@ -93,8 +93,8 @@ export function Navigation() {
                 className={clsx(
                   "block px-4 py-3 rounded-lg text-sm font-medium transition-colors",
                   pathname === item.href
-                    ? "bg-cyan-100 text-cyan-700"
-                    : "text-slate-600 hover:bg-slate-100"
+                    ? "bg-violet-500/20 text-violet-300"
+                    : "text-slate-400 hover:text-white hover:bg-slate-800"
                 )}
               >
                 <span className="mr-2">{item.icon}</span>
