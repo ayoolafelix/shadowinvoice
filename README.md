@@ -22,7 +22,7 @@ A real-time blockchain intelligence dashboard powered by **Dune SIM** for tracki
 
 ```bash
 # Clone the repository
-git clone https://github.com/ayoolafelix/atlas.git
+git clone https://github.com/yourusername/atlas.git
 cd atlas
 
 # Install dependencies
@@ -130,24 +130,24 @@ Calculates wallet trustworthiness based on:
 ## Project Structure
 
 ```
-/atlas
+.
 ├── app/
 │   ├── page.tsx              # Global dashboard
-│   ├── analytics/page.tsx    # Economic overview
-���   ├── risk/page.tsx        # Risk detection
+│   ├── analytics/page.tsx   # Economic overview
+│   ��── risk/page.tsx        # Risk detection
 │   ├── wallet/[address]/    # Wallet intelligence
 │   └── api/status/         # API status endpoint
 ├── components/
 │   ├── TransactionFeed.tsx  # Live transactions
-│   ├── WalletCard.tsx      # Wallet profile card
-│   ├── TrustScoreBadge.tsx # Trust score display
-│   ├── FlowGraph.tsx      # Charts & heatmaps
+│   ├── WalletCard.tsx        # Wallet profile card
+│   ├── TrustScoreBadge.tsx   # Trust score display
+│   ├── FlowGraph.tsx        # Charts & heatmaps
 │   └── RiskPanel.tsx       # Risk alerts
 ├── lib/
-│   ├── simClient.ts       # Dune SIM integration
-│   ├── trustScore.ts      # Trust algorithm
-│   ├── formatters.ts     # Display utilities
-│   └── store.ts        # Zustand state
+│   ├── simClient.ts        # Dune SIM integration
+│   ├── trustScore.ts       # Trust algorithm
+│   ├── formatters.ts       # Display utilities
+│   └── store.ts           # Zustand state
 └── ...
 ```
 
